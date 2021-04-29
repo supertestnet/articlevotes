@@ -1,0 +1,66 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <a href="/admin/add/"><button>Add new</button></a>
+    <br>&nbsp;
+    <table id="article_table">
+    <tbody>
+    <tr>
+    <th>Article title</th>
+    <th>Listed?</th>
+    <th>Image</th>
+    <th>Sats</th>
+    <th>Trending?</th>
+    <th>Description</th>
+    <th>Link</th>
+    <th>Edit</th>
+    </tr>
+    </tbody>
+    </table>
+
+    <pre id="articlesArray" style="display: none;">[showarticles]
+    </pre>
+
+    <script>
+            var articles = JSON.parse( document.getElementById( "articlesArray" ).innerHTML );
+            var i; for ( i=0; i<articles.length; i++ ) {
+                    var tr = document.createElement( "tr" );
+                    var j; for ( j=0; j<8; j++ ) {
+                            var field;
+                            if ( j==0 ) {field = articles[i][ "title" ];}
+                            if ( j==1 ) {
+                                    if ( articles[i][ "status" ] == "1"  ) {
+                                            field = '<p style="color: lightgreen; text-align: center; font-size: 35px;">&#10003;</p>';
+                                    } else {
+                                            field = '<p style="color: red; text-align: center; font-size: 35px;">&times;</p>';
+                                    }
+                            }
+                            if ( j==2 ) {field = '<img src="' + articles[i][ "img" ] + '" />';}
+                            if ( j==3 ) {field = parseInt( articles[i][ "sats" ], 10 ).toLocaleString() + ' &circledS;';}
+                            if ( j==4 ) {
+                                    if ( articles[i][ "trending" ] == 1 ) {
+                                            field = '<p style="color: lightgreen; text-align: center; font-size: 35px;">&#10003;</p>';
+                                    } else {
+                                            field = '<p style="color: red; text-align: center; font-size: 35px;">&times;</p>';
+                                    }
+                            }
+                            if ( j==5 ) {
+                                    if ( articles[i][ "description" ] ) {
+                                            field = articles[i][ "description" ].replace( /\\\\n/g, "<br>" );
+                                    } else {
+                                            field = 'No description';
+                                    }
+                            }
+    //                        if ( j==5 ) {field = articles[i][ "description" ].replace( /\\\\n/g, "<br>" );}
+                            if ( j==6 ) {field = articles[i][ "link" ];}
+                            if ( j==7 ) {field = '<a style="text-decoration: none; color: black;" href="/admin/edit/?article=' + articles[i][ "id" ] + '">&#9999;</a>';}
+                            var td = document.createElement( "td" );
+                            td.innerHTML = field;
+                            tr.append( td );
+                    }
+            document.getElementById( "article_table" ).getElementsByTagName( "tbody" )[0].append( tr );
+            }
+    </script>
+  </body>
+</html>
