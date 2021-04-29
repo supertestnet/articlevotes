@@ -1,0 +1,74 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <div id="success_message" style="display: none; padding: 10px; border: 2px solid lightgreen; text-align: center; margin-bottom: 20px;">
+            Your article has been added successfully.
+    </div>
+
+    <script>
+            if ( window.location.href.includes( "success=true" ) ) {
+                    document.getElementById( "success_message" ).style.display = "block";
+            }
+            if ( window.location.href.includes( "success=false" ) ) {
+                    document.getElementById( "success_message" ).style.display = "block";
+                    document.getElementById( "success_message" ).style.border = "2px solid red";
+                    document.getElementById( "success_message" ).innerText = "There was an error trying to add your article. Please contact your system administrator.";
+            }
+    </script>
+
+    <script>
+      var style = document.createElement( "style" );
+      var css = document.createTextNode( ".entry-content {text-align: left;}" );
+      style.appendChild( css );
+      document.getElementsByTagName( "head" )[0].appendChild( style );
+    </script>
+
+    <form method="post">
+            <p style="font-weight: bold;">Article title</p>
+            <input type="text" name="title" id="title" required=""><br>&nbsp;
+            <p style="font-weight: bold;">Main image</p>
+            <input type="text" name="img" id="img" required=""><br>&nbsp;
+            <p style="font-weight: bold;">Initial sats</p>
+            <input type="number" name="sats" id="sats" required=""><br>&nbsp;
+            <p style="font-weight: bold;">Trending?</p>
+            <input type="checkbox" name="trending" id="trending"><br>&nbsp;
+            <p style="font-weight: bold;">Description</p>
+            <textarea name="description" id="description" rows="6" required=""></textarea><br>&nbsp;
+            <p style="font-weight: bold;">Link</p>
+            <input type="text" name="link" id="link" required=""><br>&nbsp;
+            <br>&nbsp;
+            <button type="button" name="submit" id="submit">Submit</button>
+    </form>
+
+    <script>
+            document.getElementById( "submit" ).addEventListener( "click", function() {
+                    var trending = 0;
+                    if ( document.getElementById( "trending" ).checked ) {trending = 1;}
+                    var url = '/wp-admin/admin-ajax.php?action=addarticle&'.replace("#038;", "") + 'title=' + document.getElementById( "title" ).value + '&'.replace("#038;", "") + 'img=' + document.getElementById( "img" ).value + '&'.replace("#038;", "") + 'sats=' + document.getElementById( "sats" ).value + '&'.replace("#038;", "") + 'trending=' + trending + '&'.replace("#038;", "") + 'description=' + document.getElementById( "description" ).value + '&'.replace("#038;", "") + 'link=' + document.getElementById( "link" ).value + '&'.replace("#038;", "") + 'status=1';
+    //                document.write( url );
+                    addArticle( url );
+            });
+    </script>
+
+    <script>
+    function addArticle( url ) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                    if ( this.readyState == 4 && this.status == 200 ) {
+                           document.body.scrollTop = document.documentElement.scrollTop = 0;
+                           if ( !window.location.href.includes( "success=" ) ) {
+                                   window.location.href += "?success=true";
+                           } else {
+                                   window.location.reload();
+                           }
+                    } else if ( this.status == 400 ) {
+                            window.location.href += "?success=false";
+                    }
+            };
+            xhttp.open("GET", url, true);
+            xhttp.send();
+    }
+    </script>
+  </body>
+</html>
