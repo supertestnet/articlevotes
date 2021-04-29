@@ -1,0 +1,200 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <div id="boxes" style="text-align: left; width: 100%; max-width: 1165px; margin: auto;">
+    </div>
+
+    <pre style="display: none;" id="articles">[showarticles status="true"]</pre>
+
+    <script>
+    function makeBlock( rank, trending, pic, sats, title, description, link ) {
+            sats = parseInt( sats, 10 );
+            var displayTrending = 'style="display: none;"';
+            if ( trending == true ) {
+                    displayTrending = 'style="display: block;"';
+            }
+            var block = document.createElement( "div" );
+            block.className = "block";
+            block.innerHTML = '<div class="top"><div class="rank">#' + rank + '</div><div class="trending"' + displayTrending + '>Trending</div><div class="pic" style="background-image: url(\'' + pic + '\');"></div></div><div class="bottom"><div class="sats"><div class="arrow" data-article="' + title + '">&#10140;</div><div class="number">' + sats.toLocaleString() + '</div></div><div class="text"><div class="title"><a href="' + link + '" target="_blank">' + title + ' <img src="https://evangelizationschool.com/wp-content/uploads/2020/06/240px-External_Link_89630_-_The_Noun_Project.svg_.png" width="22px"></a></div><div class="description">' + description + '</div></div>';
+            document.getElementById( "boxes" ).append( block );
+    }
+    </script>
+
+    <script>
+    function showLN() {
+            document.getElementById( "blackBackground" ).style.display = "block";
+            document.getElementById( "tipbox" ).innerHTML = '<\div id="tipbox_close_button" style="float: right; font-size: 25px; line-height: 22px; cursor: pointer;">&times;</div><p id="tipbox_top_text" style="text-align: center;">Boost this article</\p><\div id="tipbox_body"></\div>';
+            setTimeout(function() { setTipboxPosition(); }, 5);
+            document.getElementById( "tipbox_close_button" ).addEventListener( "click", function() {
+                    document.getElementById( "tipbox" ).style.display = "none";
+                    document.getElementById( "blackBackground" ).style.display = "none";
+            });
+            document.getElementById( "tipbox_body" ).innerHTML = '<\div align="center"><div>Please enter an amount in sats.</div><input id="inv_amt" type="number" style="vertical-align: middle;"> <button onclick="getInvoice( document.getElementById( \'inv_amt\' ).value )" style="vertical-align: middle;">Submit</button> <img id="spinner" src="https://evangelizationschool.com/wp-content/uploads/2020/12/spinner.gif" style="display: none; width: 35px; vertical-align: middle;"></\div>';
+    }
+    function getInvoice( amt ) {
+            if ( amt ) {
+                    document.getElementById( "spinner" ).style.display = "inline";
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                            if ( this.readyState == 4 && this.status == 200 ) {
+                                    console.log( JSON.parse( this.responseText )["pmthash"] );
+                                    createTipboxBody( JSON.parse( this.responseText )["invoice"] );
+                                    checkInvoiceStatus( JSON.parse( this.responseText )["pmthash"], sessionStorage[ "article" ], amt );
+                            }
+                    };
+                    xhttp.open( "GET", "/wp-admin/admin-ajax.php?action=getinvoice&".replace("#038;", "") + "amount=" + amt + "&".replace("#038;", "") + "memo=" + sessionStorage[ "article" ], true );
+                    xhttp.send();
+            } else {
+                    alert( "Please enter an amount in sats." );
+            }
+    }
+    </script>
+
+    <script>
+    function makeBlocks( blocks ) {
+            document.getElementById( "boxes" ).innerHTML = "";
+            blocks.sort((a, b) => {
+                    return b.sats - a.sats;
+            });
+            var i; for ( i=0; i<blocks.length; i++ ) {
+                    makeBlock( i + 1, blocks[i][ "trending" ], blocks[i][ "img" ], blocks[i][ "sats" ], blocks[i][ "title" ], blocks[i][ "description" ], blocks[i][ "link" ] );
+            }
+            var i; for ( i=0; i<document.getElementsByClassName( "arrow" ).length; i++ ) {
+                    document.getElementsByClassName( "arrow" )[i].addEventListener( "click", function() {
+                            sessionStorage[ "article" ] = this.getAttribute( "data-article" );
+                            showLN();
+                    });
+            }
+    }
+    </script>
+
+    <script>
+    var blocks = JSON.parse( document.getElementById( "articles" ).innerText );
+    makeBlocks( blocks );
+    </script>
+
+    <script>
+      var style = document.createElement("style");
+      var css = document.createTextNode("a {color: blue;} .block {display: inline-block; width: 100%; max-width: 330px; margin: 10px; border: 1px solid black; border-radius: 5px; text-align: left; box-shadow: grey 4px 4px 4px;} .top {width: 100%; height: 100%; max-height: 186px;} .rank {display: inline-block; background-color: #fcb819; border-radius: 10px; color: white; text-align: center; float: right; padding-left: 10px; padding-right: 10px; margin: 10px; margin-left: 0px;} .trending {display: inline-block; background-color: #9c27b0; border-radius: 10px; color: white; text-align: center; float: right; padding-left: 10px; padding-right: 10px; margin: 10px; margin-left: 0px;} .pic { background-position: center center; background-size: cover; width: 100%; height: 186px;} .bottom {padding: 10px;} .sats {display: inline-block; width: 100%; max-width: 70px; text-align: center;} .arrow {display: inline-block; -ms-transform: rotate(270deg); transform: rotate(270deg); color: green; border: 1px solid green; border-radius: 50%; width: 36px; height: 36px; vertical-align: top; padding-top: 3px; cursor: pointer;} .text {display: inline-block; width: calc(100% - 76px); vertical-align: top;} .title {color: blue; font-size: 22px; font-weight: bold;} ");style.appendChild(css);document.getElementsByTagName("head")[0].appendChild(style);
+    </script>
+
+    <script>
+            var style = document.createElement("style");
+            var css = document.createTextNode(".switch {  position: relative;  display: inline-block;  width: 30px;  height: 17px;}.switch input {   opacity: 0;  width: 0;  height: 0;}.slider {  position: absolute;  cursor: pointer;  top: 0;  left: 0;  right: 0;  bottom: 0;  border-radius: 17px;  background-color: #ccc;  -webkit-transition: .4s;  transition: .4s;}.slider:before {  position: absolute;  content: '';  height: 13px;  width: 13px;  left: 2px;  bottom: 2px;  border-radius: 50%;  background-color: white;  -webkit-transition: .4s;  transition: .4s;}input:checked + .slider {  background-color: #2196F3;}input:focus + .slider {  box-shadow: 0 0 1px #2196F3;}input:checked + .slider:before {  -webkit-transform: translateX(13px);  -ms-transform: translateX(13px);  transform: translateX(13px);}");
+            style.appendChild(css);
+            document.getElementsByTagName("head")[0].appendChild(style);
+    </script>
+    <div id="blackBackground" style="width: 100%; position: fixed; top: 0px; left: 0px; background-color: black; z-index: 10; opacity: 0.7; display: none;"></div>
+    <div id="tipbox" style="background-color: white; color: black; position: fixed; padding: 20px; width: 80%; max-width: 400px; height: 100%; max-height: 590px; overflow-y: auto; border-radius: 20px; z-index: 10; display: none;"></div>
+    <script src="https://evangelizationschool.com/wp-content/plugins/danz_shortcodes/qr.js"></script>
+    <script>
+            function createQR( content ) {
+                    var dataUriPngImage = document.createElement( "img" ),
+                    s = QRCode.generatePNG( content, {
+                                    ecclevel: "M",
+                                    format: "html",
+                                    fillcolor: "#FFFFFF",
+                                    textcolor: "#373737",
+                                    margin: 4,
+                                    modulesize: 8
+                            });
+                    dataUriPngImage.src = s;
+                    dataUriPngImage.id = "qr_code";
+                    dataUriPngImage.style.display = "block";
+                    dataUriPngImage.style.margin = "auto";
+                    document.getElementById( "tipbox_body" ).appendChild( dataUriPngImage );
+            }
+    </script>
+    <script>
+    //This script makes the tipbox and the black background disappear when you click the black background.
+            document.getElementById( "blackBackground" ).onclick = function() {
+                    this.style.display = "none";
+                    document.getElementById( "tipbox" ).style.display = "none";
+            }
+            function setTipboxPosition() {
+                    document.getElementById( "blackBackground" ).style.display = "block";
+                    document.getElementById("blackBackground").style.height = document.body.offsetHeight + "px";
+                    document.getElementById( "tipbox" ).style.display = "block";
+                    document.getElementById( "tipbox" ).style.top = window.innerHeight/2 - document.getElementById( "tipbox" ).offsetHeight/2 + "px";
+                    document.getElementById( "tipbox" ).style.left = window.innerWidth/2 - document.getElementById( "tipbox" ).offsetWidth/2 + "px";
+            }
+    </script>
+
+    <script>
+            function checkInvoiceStatus( pmthash, article, amt ) {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                            if ( this.readyState == 4 && this.status == 200 ) {
+                                    if ( this.responseText == 1 ) {
+                                            successMessage();
+                                            var blocks = JSON.parse( document.getElementById( "articles" ).innerText );
+                                            var i; for ( i=0; i<blocks.length; i++ ) {
+                                                    var articleid = blocks[i].id;
+                                                    if ( blocks[i].title == article ) {
+                                                            var oldamt = blocks[i].sats;
+                                                            oldamt = parseInt( oldamt, 10 );
+                                                            amt = parseInt( amt, 10 );
+                                                            newamt = oldamt + amt;
+                                                            blocks[i].sats = newamt;
+                                                            blocks[i].trending = 1;
+                                                    } else {
+                                                            blocks[i].trending = false;
+                                                    }
+                                            }
+                                            document.getElementById( "articles" ).innerText = JSON.stringify( blocks );
+                                            makeBlocks( blocks, article );
+                                            setTimeout( function() {document.getElementById( "tipbox" ).style.display = "none"; document.getElementById( "blackBackground" ).style.display = "none";}, 3000 );
+                                    } else {
+                                            setTimeout( function() {checkInvoiceStatus( pmthash, article, amt );}, 5000 );
+                                    }
+                            }
+                    };
+                    console.log( "/wp-admin/admin-ajax.php?action=checkinvoice&".replace("#038;", "") + "pmthash=" + pmthash + "&".replace("#038;", "") + "title=" + article );
+                    xhttp.open( "GET", "/wp-admin/admin-ajax.php?action=checkinvoice&".replace("#038;", "") + "pmthash=" + pmthash + "&".replace("#038;", "") + "title=" + article, true );
+                    xhttp.send();
+            }
+    </script>
+    <script>
+            function createContactForm() {
+                    document.getElementById( "blackBackground" ).style.display = "block";
+                    document.getElementById( "tipbox" ).innerHTML = '<\div id="tipbox_close_button" style="float: right; font-size: 25px; line-height: 22px; cursor: pointer;">&times;</div><p id="tipbox_top_text" style="text-align: center;">Contact Info</\p><\div id="tipbox_body"></\div>';
+                    document.getElementById( "tipbox_body" ).append( document.getElementById( "contactInfo" ) );
+                    setTipboxPosition();
+                    document.getElementById( "tipbox_close_button" ).addEventListener( "click", function() {
+                            document.getElementById( "tipbox" ).style.display = "none";
+                            document.getElementById( "blackBackground" ).style.display = "none";
+                    });
+            }
+            function createTipboxBody( address ) {
+                    var prefix;
+                    if ( address.substring( 0, 1 ) == "l" ) {
+                            prefix = "lightning";
+                    } else {
+                            prefix = "bitcoin";
+                    }
+                    document.getElementById( "tipbox_body" ).innerHTML = "";
+                    createQR( address );
+                    var postQrText = document.createElement( "p" );
+                    postQrText.innerHTML = '<\div style="width: 100%; overflow: hidden; text-overflow: ellipsis;"><\input id="addressBox" style="display: inline-block; width: 75%; vertical-align: middle;" value="' + address + '"><\div id="copyButton" style="display: inline-block; width: 10%; font-size: 25px; cursor: pointer; vertical-align: middle;">&#x1F5CD;</div><br>&nbsp;<br><a href="' + prefix + ':' + address + '"><button id="open_wallet_button">Open Wallet</button></a></div>';
+                    postQrText.style.textAlign = "center";
+                    document.getElementById( "tipbox_body" ).appendChild( postQrText );
+                    setTimeout(function() { setTipboxPosition(); }, 5);
+                    document.getElementById( "tipbox_close_button" ).addEventListener( "click", function() {
+                            document.getElementById( "tipbox" ).style.display = "none";
+                            document.getElementById( "blackBackground" ).style.display = "none";
+                    });
+                    document.getElementById( "copyButton" ).addEventListener( "click", function () {
+                            document.getElementById( "addressBox" ).select();
+                            document.getElementById( "addressBox" ).setSelectionRange(0, 99999)
+                            document.execCommand( "copy" );
+                    });
+            }
+    </script>
+    <script>
+            function successMessage() {
+                    document.getElementById( "tipbox_body" ).innerHTML = '<\p>&nbsp;</\p><\p>&nbsp;</\p><\div align="center"><\p style="font-size: 500%; color: green; font-weight: bold;">&check;</\p><\p>Thank you! The article has been boosted.</\p></\div>';
+            }
+    </script>
+  </body>
+</html>
