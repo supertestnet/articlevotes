@@ -1,6 +1,6 @@
-1. Generate lnbits wallet
+== 1. Generate lnbits wallet ==
 
-/* How to call generateLNBitsWallet */
+== How to call generateLNBitsWallet ==
 
 Before using this function your lnbits instance must have the user manager extension installed and one user created. Once that is done, your user_id can be found in the Users section of the User Manager extension page and your admin_id can be found in the url of the User Manager extension page after the parameter “usr=”.
 
@@ -30,15 +30,15 @@ Before using this function your lnbits instance must have the user manager exten
 	</body>
 	</html>
 
-/* What to expect as a result of running generateLNBitsWallet */
+== /* What to expect as a result of running generateLNBitsWallet */ ==
 
 	{ "admin": "f54c3d4265ed4585afc86162ddf4a38c", "adminkey": "d9327824af6c42dc8a9acc7515a7ed3f", "id": "9c05fe586bb44c638066c6ecc9defd82", "inkey": "3905112ba35d49929fc0daff4beb2a4a", "name": "test2wallet2", "user": "6447d24778514d21a746aa9c38cd4951" }
 
 Also note that one user can have many wallets so you can have a user called something like “Lightning Video Game” and then each player can have a unique wallet belonging to that one user. Each player does not need to be a different lnbits “user,” they each just need a different lnbits wallet.
 
-2. Request invoice [done]
+== 2. Request invoice [done] ==
 
-/* How to call requestInvoice */
+== /* How to call requestInvoice */ ==
 
 	<?php
 
@@ -66,17 +66,17 @@ Also note that one user can have many wallets so you can have a user called some
     </body>
     </html>
 
-/* What to expect as a result of running requestInvoice */
+== /* What to expect as a result of running requestInvoice */ ==
 
 	{"invoice":"lnbc1u1p0afau8pp5rmpk82za3x22uvnhaqahtuerls7nfg846hkka55sz6qg9s0rfs3sdq523jhxapqf9h8vmmfvdjscqzpgxqyz5vqsp56he3s5j8nx5ysc89cppuguzxsyd3jngsf6yx0yf3c0g4d7ecwr6q9qy9qsqfvscrhk28hskapg2xqy2r5udmyh5jk8knpk3n0yu9jar6mu4swtzgxwusrwr62qnpcv48lctsvm84hfz53gj2au3nxqw9hy34zvknzgqkvlxrs","pmthash":"1ec363a85d8994ae3277e83b75f323fc3d34a0f5d5ed6ed290168082c1e34c23"}
     
-/* What happens when the invoice is paid */
+== /* What happens when the invoice is paid */ ==
 
 When the invoice is paid, a get request will be sent to http://example.com/test.php with the parameters "test=true" and "test2=false." A script there can then (for example) write those parameters to a file.
 
-3. Check invoice status [done]
+== 3. Check invoice status [done] ==
 
-/* How to call checkInvoice */
+== /* How to call checkInvoice */ ==
 
 	<?php
 
@@ -102,15 +102,15 @@ When the invoice is paid, a get request will be sent to http://example.com/test.
 	</body>
 	</html>
 
-/* What to expect as a result of running checkInvoice */
+== /* What to expect as a result of running checkInvoice */ ==
 
 	0 [if unpaid]
 or
 	1 [if paid]
 
-4. Pay invoice [done]
+== 4. Pay invoice [done] ==
 
-/* How to call payInvoice */
+== /* How to call payInvoice */ ==
 
 	<?php
 
@@ -136,7 +136,7 @@ or
 	</body>
 	</html>
 
-/* What to expect as a result of running payInvoice */
+== /* What to expect as a result of running payInvoice */ ==
 
 	1 [if successful]
 or
@@ -144,9 +144,9 @@ or
 or
 	{"error":"Bad bech32 checksum"}
 
-5. Delete lnbits wallet [done]
+== 5. Delete lnbits wallet [done] ==
 
-/* How to call generateLNBitsWallet */
+== /* How to call generateLNBitsWallet */ ==
 
 	<?php
 
@@ -172,6 +172,6 @@ or
 	</body>
 	</html>
 
-/* What to expect as a result of running generateLNBitsWallet */
+== /* What to expect as a result of running generateLNBitsWallet */ ==
 
 	Nothing -- this function does not return anything
