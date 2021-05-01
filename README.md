@@ -1,6 +1,6 @@
 Zip the two php files into one zip archive to create a wordpress plugin. Upload that wordpress plugin to a wordpress instance to install it. The file LightningController is also interesting on its own because it offers easy ways to control an LNBits instance using php. See documentation.md for more info.
 
-Enter your lnbits credentials in Dashboard > Settings > Article Votes. Then you can connect this plugin to any publicly accessible LNBits instance except ones based on tor. (You can support tor-based LNBits instances by teaching your server how to "talk" to the tor network but that is out of scope for these instructions. 
+Enter your lnbits credentials in Dashboard > Settings > Article Votes. Then you can connect this plugin to any publicly accessible LNBits instance except ones based on tor. (You can support tor-based LNBits instances by teaching your server how to "talk" to the tor network but that is out of scope for these instructions.)
 
 Example code for displaying the articles and adding more of them is provided in the files display.html, admin.html, and add.html. To make the files I copy/pasted them from a dummy wordpress site I made while working on the plugin. Then I wrapped them in basic html tags and stuck them in "body":
 
