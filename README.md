@@ -9,6 +9,7 @@ Example code for displaying the articles and adding more of them is provided in 
 <head>
 </head>
 <body>
+        [I put the code I ripped from my wordpress site in here]
 </body>
 </html>
 ```
