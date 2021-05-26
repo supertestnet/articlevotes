@@ -15,3 +15,9 @@ Example code for displaying the articles and adding more of them is provided in 
 ```
 
 I recommend that if you are using wordpress, do the reverse of what I did to make them: create three new pages in wordpress, and for each one, copy the html between the "body" tags and paste the contents into your wordpress pages. Manage the articles from admin.html which will probably end up as something like mywordpresswebsite.com/admin/ once you create a page for it.
+
+# License
+
+I hereby release my work into the public domain. This applies worldwide.
+In some countries this may not be legally possible; if so:
+I grant anyone the right to use my work for any purpose, without any conditions, unless such conditions are required by law.
