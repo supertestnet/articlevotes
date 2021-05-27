@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Article Votes
  * Description: Manage a database of articles such that people can vote for them by sending sats
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Super Testnet
  */
 
