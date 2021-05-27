@@ -3,7 +3,7 @@
 /**
  * Plugin Name: Article Votes
  * Description: Manage a database of articles such that people can vote for them by sending sats
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Super Testnet
  */
 
@@ -102,7 +102,7 @@ function editArticle() {
 
 add_action('wp_ajax_editarticle', 'editArticle');
 
-function checkInvoice() {
+function checkTheInvoice() {
         global $wpdb;
         $table_name = $wpdb->prefix . 'invoicesDB';
         include_once( 'LightningController.php' );
@@ -139,8 +139,8 @@ function checkInvoice() {
 	die();
 }
 
-add_action( 'wp_ajax_checkinvoice', 'checkInvoice' );
-add_action( 'wp_ajax_nopriv_checkinvoice', 'checkInvoice' );
+add_action( 'wp_ajax_checkinvoice', 'checkTheInvoice' );
+add_action( 'wp_ajax_nopriv_checkinvoice', 'checkTheInvoice' );
 
 function getInvoice() {
     $amt = 10;
