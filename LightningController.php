@@ -87,9 +87,8 @@ class LightningController
     {
         ob_start();
 //        $payload = '{"out": false, "amount": ' . $amount . ', "memo": "' . $memo . '", "webhook": "' . $webhook . '"}';
-//        $payload = '{"num_satoshis":' . $amount . ', "memo":' . $memo . '}';
-	$payload = '{"num_satoshis":' . $amount . ',"memo":"' . $memo . '"}';
-        $url = $lnbits_url . '/api/v1/payments';
+        $payload = '{"out": false, "amount": ' . $amount . ', "memo": "' . $memo . '"}';
+	$url = $lnbits_url . '/api/v1/payments';
         $ch = curl_init();
         curl_setopt( $ch, CURLOPT_URL, $url );
         curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
