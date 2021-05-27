@@ -89,24 +89,21 @@ class LightningController
 //        $payload = '{"out": false, "amount": ' . $amount . ', "memo": "' . $memo . '", "webhook": "' . $webhook . '"}';
 //        $payload = '{"num_satoshis":' . $amount . ', "memo":' . $memo . '}';
 	$payload = '{"num_satoshis":' . $amount . ',"memo":"' . $memo . '"}';
-//        $url = $lnbits_url . '/api/v1/payments';
-        $url = 'https://api.lnpay.co/v1/wallet/' . $lnbits_apikey . '/invoice';
+        $url = $lnbits_url . '/api/v1/payments';
         $ch = curl_init();
         curl_setopt( $ch, CURLOPT_URL, $url );
         curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
-//                'X-Api-Key: ' . $lnbits_apikey,
+                'X-Api-Key: ' . $lnbits_apikey,
                 'Content-Type: application/json'
         ));
         curl_setopt( $ch, CURLOPT_POSTFIELDS, $payload );
-//The following line was not originally part of LightningController.php
-        curl_setopt($ch, CURLOPT_USERPWD, $lnbits_apikey . ":");
         $head = curl_exec( $ch );
         $httpCode = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
         curl_close( $ch );
         $data = ob_get_clean();
         $data = json_decode( $data, true );
         $result["invoice"] = $data["payment_request"];
-//        $result["pmthash"] = $data["payment_hash"];
+        $result["pmthash"] = $data["payment_hash"];
         $result["pmthash"] = $data["id"];
         $json = json_encode( $result );
         return $json;
@@ -117,26 +114,18 @@ class LightningController
     public function checkInvoice( $lnbits_url, $pmthash, $lnbits_apikey )
     {
         ob_start();
-//        $url = $lnbits_url . '/api/v1/payments';
-        $url = 'https://api.lnpay.co/v1/lntx/' . $pmthash . '?fields=settled';
+        $url = $lnbits_url . '/api/v1/payments';
         $ch = curl_init();
         curl_setopt( $ch, CURLOPT_URL, $url );
-/*        curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
+        curl_setopt( $ch, CURLOPT_HTTPHEADER, array(
                 'X-Api-Key: ' . $lnbits_apikey,
                 'Content-Type: application/json'
         ));
-*/
-//The following line was not originally part of LightningController.php
-        curl_setopt($ch, CURLOPT_USERPWD, "$lnbits_apikey:");
         $head = curl_exec( $ch );
         $httpCode = curl_getinfo( $ch, CURLINFO_HTTP_CODE );
         curl_close( $ch );
-//        $paychecker = ob_get_clean();
+        $paychecker = ob_get_clean();
         $data = ob_get_clean();
-//The following 3 lines were not originally part of LightningController.php
-        $data = json_decode( $data, true );
-        $paychecker = $data["settled"];
-	return $paychecker;
         if ( $paychecker == 1 ) {$paychecker = "true";}
         if ( strpos( $paychecker, "true" ) !== false ) {
             $paychecker = 1;
