@@ -103,7 +103,6 @@ class LightningController
         $data = json_decode( $data, true );
         $result["invoice"] = $data["payment_request"];
         $result["pmthash"] = $data["payment_hash"];
-        $result["pmthash"] = $data["id"];
         $json = json_encode( $result );
         return $json;
     }
