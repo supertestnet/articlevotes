@@ -1,3 +1,5 @@
+# Article Votes is now called Satoshi Votes
+
 Zip the two php files into one zip archive to create a wordpress plugin. Upload that wordpress plugin to a wordpress instance to install it. The file LightningController is also interesting on its own because it offers easy ways to control an LNBits instance using php. See documentation.md for more info.
 
 Enter your lnbits credentials in Dashboard > Settings > Article Votes. Then you can connect this plugin to any publicly accessible LNBits instance except ones based on tor. (You can support tor-based LNBits instances by teaching your server how to "talk" to the tor network but that is out of scope for these instructions.)
